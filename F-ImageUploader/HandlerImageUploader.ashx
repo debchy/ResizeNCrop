@@ -3,7 +3,6 @@
 Imports System
 Imports System.Web
 Imports System.IO
-Imports Newtonsoft.Json
 
 Public Class HandlerImageUploader : Implements IHttpHandler
 
