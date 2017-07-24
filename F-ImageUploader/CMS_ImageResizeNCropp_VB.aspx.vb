@@ -4,12 +4,13 @@ Imports System.IO
 Partial Class F_ImageUploader_CMS_ImageResizeNCropp_VB
     Inherits System.Web.UI.Page
 
-    Protected resizedWeight, resizedHeight As Int16
+    Protected resizedWidth, resizedHeight As Int16
     Private Sub F_ImageUploader_CMS_ImageResizeNCropp_VB_Init(sender As Object, e As EventArgs) Handles Me.Init
+        Response.Cache.SetCacheability(HttpCacheability.NoCache)
         Try
-            resizedWeight = If(Request.QueryString("weight") <> "", Int16.Parse(Request.QueryString("weight")), 700)
+            resizedWidth = If(Request.QueryString("Width") <> "", Int16.Parse(Request.QueryString("Width")), 700)
         Catch ex As Exception
-            resizedWeight = 700
+            resizedWidth = 700
         End Try
         Try
             resizedHeight = If(Request.QueryString("height") <> "", Int16.Parse(Request.QueryString("height")), 200)
@@ -17,8 +18,8 @@ Partial Class F_ImageUploader_CMS_ImageResizeNCropp_VB
             resizedHeight = 200
         End Try
 
-        If resizedWeight >= resizedHeight Then
-            canvasSource.Attributes.Add("weight", resizedWeight)
+        If resizedWidth >= resizedHeight Then
+            canvasSource.Attributes.Add("Width", resizedWidth)
         Else
             canvasSource.Attributes.Add("height", resizedHeight)
         End If

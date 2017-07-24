@@ -56,7 +56,7 @@
                     </div>
                     <div class="col-xs-3">
                         <div class="input-group">
-                            <span class="input-group-addon" id="basic-addon1">Weight</span>
+                            <span class="input-group-addon" id="basic-addon1">Width</span>
                             <input type="text" name="imgWidth" id="imgWidth" readonly="true" class="form-control" />
                         </div>
                     </div>
@@ -69,7 +69,7 @@
                 </div>
                 <div class="row" >
                     <div class="col-xs-12">
-                        <canvas id="canvasSource" width="600" runat="server"></canvas>
+                        <canvas id="canvasSource"  runat="server"></canvas>
                         <div style="margin-top:10px">
                             <%--<form name="photo" id="imageUploadForm" enctype="multipart/form-data" action="/" method="post">
 
@@ -134,7 +134,7 @@
     <script type="text/javascript">
         $(function () {
             
-            var resizedWeight='<%= resizedWeight %>';
+            var resizedWidth='<%= resizedWidth%>';
             var resizedHeight='<%= resizedHeight %>';
 
             $('#FileUpload1').change(function () {
@@ -145,7 +145,7 @@
                     //$('#Image1').show();
                     $('#Image1').attr("src", e.target.result);
 
-                    var canvas = document.getElementById("canvasSource");
+                    var canvas = document.getElementById("canvasSource");                    
                     var ctx = canvas.getContext("2d");
 
                     img = new Image();
@@ -163,8 +163,8 @@
                             allowResize: !0,
                             bgColor: 'black',
                             bgOpacity: .4,
-                            setSelect: [ parseInt( resizedWeight), parseInt( resizedHeight), 0, 0],
-                            aspectRatio: parseInt( resizedWeight) / parseInt( resizedHeight),
+                            setSelect: [ parseInt( resizedWidth), parseInt( resizedHeight), 0, 0],
+                            aspectRatio: parseInt( resizedWidth) / parseInt( resizedHeight),
                             onChange: SetCoordinates,
                             onSelect: SetCoordinates
                         });
@@ -213,6 +213,7 @@
                 e.preventDefault();
                 var data = new FormData();
                 data.append('File', $('#imgCropped').val());
+                parent.GetImage('' );
                 $.ajax({
                     async: true,
                     type: 'POST',
@@ -227,7 +228,7 @@
                         console.log("success");
                         console.log(data.url);
                         $('#pnlResult').show(); $('#pnlCrpper').hide(); $('#pnlUpload').hide();
-                        $("#lblMessage").html("<div class='alert alert-success' role='alert'><i class='glyphicon glyphicon-ok' aria-hidden='true'></i> Successfully Uploaded</div>");
+                        $("#lblMessage").html("<div class='alert alert-success' role='alert'><i class='glyphicon glyphicon-ok' aria-hidden='true'></i> Successfully Uploaded! Close the window to continue.</div>");
                         $("#imgResultImage").attr("src", '/Admin/' + data.url)
                         parent.GetImage('/Admin/' + data.url);
 
