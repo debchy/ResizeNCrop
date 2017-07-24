@@ -74,9 +74,10 @@
                             <%--<form name="photo" id="imageUploadForm" enctype="multipart/form-data" action="/" method="post">
 
                             </form>--%>
-                            <input type="button" id="btnCrop" value="Crop" style="display: none" class="btn btn-primary" />
+                            <%--<input type="button" id="btnCrop" value="Crop" style="display: none" class="btn btn-primary" />--%>
+                            <button type="button" id="btnCrop" style="display: none" class="btn btn-primary"><i class="glyphicon glyphicon-screenshot" aria-hidden="true"></i> Crop</button>
                             <asp:Button ID="btnUpload" runat="server" Text="Upload" OnClick="Upload" Style="display: none" CssClass="btn btn-success" />
-                            <a id="btnUploadAjax" style="display: none" class="btn btn-success" href="javascript:;">Upload</a>
+                            <a id="btnUploadAjax" style="display: none" class="btn btn-success" href="javascript:;"><i class="glyphicon glyphicon-open" aria-hidden="true"></i> Upload</a>
                         </div>
                     </div>
                     
@@ -226,7 +227,7 @@
                         console.log("success");
                         console.log(data.url);
                         $('#pnlResult').show(); $('#pnlCrpper').hide(); $('#pnlUpload').hide();
-                        $("#lblMessage").html("<div class='alert alert-success' role='alert'>Successfully Uploaded</div>");
+                        $("#lblMessage").html("<div class='alert alert-success' role='alert'><i class='glyphicon glyphicon-ok' aria-hidden='true'></i> Successfully Uploaded</div>");
                         $("#imgResultImage").attr("src", '/Admin/' + data.url)
                         parent.GetImage('/Admin/' + data.url);
 
