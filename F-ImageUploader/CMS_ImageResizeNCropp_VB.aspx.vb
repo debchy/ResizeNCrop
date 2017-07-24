@@ -7,6 +7,17 @@ Partial Class F_ImageUploader_CMS_ImageResizeNCropp_VB
     Protected resizedWidth, resizedHeight As Int16
     Private Sub F_ImageUploader_CMS_ImageResizeNCropp_VB_Init(sender As Object, e As EventArgs) Handles Me.Init
         Response.Cache.SetCacheability(HttpCacheability.NoCache)
+        Response.ClearHeaders()
+        Response.AppendHeader("Cache-Control", "no-cache") '//HTTP 1.1
+        Response.AppendHeader("Cache-Control", "private") '// HTTP 1.1
+        Response.AppendHeader("Cache-Control", "no-store") '// HTTP 1.1
+        Response.AppendHeader("Cache-Control", "must-revalidate") '// HTTP 1.1
+        Response.AppendHeader("Cache-Control", "max-stale=0") '// HTTP 1.1 
+        Response.AppendHeader("Cache-Control", "post-check=0") '// HTTP 1.1 
+        Response.AppendHeader("Cache-Control", "pre-check=0") '// HTTP 1.1 
+        Response.AppendHeader("Pragma", "no-cache") '// HTTP 1.1 
+        Response.AppendHeader("Keep-Alive", "timeout=3, max=993") ' // HTTP 1.1 
+        Response.AppendHeader("Expires", "Mon, 26 Jul 1997 05:00:00 GMT") ' // HTTP 1.1
         Try
             resizedWidth = If(Request.QueryString("Width") <> "", Int16.Parse(Request.QueryString("Width")), 700)
         Catch ex As Exception

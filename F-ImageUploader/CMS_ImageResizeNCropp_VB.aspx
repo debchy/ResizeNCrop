@@ -9,7 +9,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Debashis Chowdhury" />
-
+    <meta http-Equiv="Cache-Control" Content="no-cache" />
+    <meta http-Equiv="Pragma" Content="no-cache" />
+    <meta http-Equiv="Expires" Content="0" />
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -151,8 +153,15 @@
                     img = new Image();
                     img.src = e.target.result;
                     img.onload = function () {
-
-                        canvas.height = canvas.width * (img.height / img.width);
+                        //console.log(canvas.width);
+                        if (img.height > img.width) {
+                            canvas.height = resizedHeight;
+                            canvas.width = canvas.height * (img.width / img.height);
+                        } else {
+                            canvas.width = resizedWidth;
+                            canvas.height = canvas.width * (img.height / img.width);
+                        }
+                        
 
                         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
@@ -213,7 +222,7 @@
                 e.preventDefault();
                 var data = new FormData();
                 data.append('File', $('#imgCropped').val());
-                parent.GetImage('' );
+                parent.GetImage('' );//clear the old file
                 $.ajax({
                     async: true,
                     type: 'POST',
