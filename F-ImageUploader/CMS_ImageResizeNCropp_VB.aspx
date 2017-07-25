@@ -138,7 +138,7 @@
             
             var resizedWidth='<%= resizedWidth%>';
             var resizedHeight='<%= resizedHeight %>';
-
+            var jcrop_api;
             $('#FileUpload1').change(function () {
                 $('#Image1').hide();
 
@@ -149,6 +149,10 @@
 
                     var canvas = document.getElementById("canvasSource");                    
                     var ctx = canvas.getContext("2d");
+
+                    canvas.removeAttribute("width");//clear old canvas width
+                    canvas.removeAttribute("height");//clear old canvas height
+                    
 
                     img = new Image();
                     img.src = e.target.result;
@@ -182,6 +186,7 @@
                         
                         
                         var cropperMargin = 10; //locate the cropper inside the image, instead of starting from (0,0)co-ordinate.
+                        
                         $('#canvasSource').Jcrop({
                             allowSelect: !0,
                             allowMove: !0,
@@ -192,6 +197,8 @@
                             aspectRatio: parseInt( resizedWidth) / parseInt( resizedHeight),
                             onChange: SetCoordinates,
                             onSelect: SetCoordinates
+                        }, function () {
+                            jcrop_api = this;
                         });
                     }
 
