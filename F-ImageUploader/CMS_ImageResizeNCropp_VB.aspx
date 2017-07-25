@@ -91,7 +91,7 @@
                 <div  style="margin-top:10px">
                     <div class="Preview" style="display:none">
                         <h3><span class="label label-default">Preview:</span></h3>
-                        <canvas id="canvas"></canvas>
+                        <canvas id="canvas" style="border: rgba(128, 128, 128, 0.33) dashed 1px;"></canvas>
                     </div>
                     <input type="hidden" name="imgCropped" id="imgCropped" />
                 </div>
@@ -144,7 +144,7 @@
 
                 var reader = new FileReader();
                 reader.onload = function (e) {
-                    //$('#Image1').show();
+                    $('#Image1').show();
                     $('#Image1').attr("src", e.target.result);
 
                     var canvas = document.getElementById("canvasSource");                    
@@ -154,25 +154,41 @@
                     img.src = e.target.result;
                     img.onload = function () {
                         //console.log(canvas.width);
+                        var x = 0, y = 0, canvasImgWidth, canvasImgHeight;
                         if (img.height > img.width) {
-                            canvas.height = resizedHeight;
-                            canvas.width = canvas.height * (img.width / img.height);
+                            ////portrate image                            
+                            canvasImgHeight = resizedHeight;
+                            canvasImgWidth = canvasImgHeight * (img.width / img.height);
+                            canvas.height = canvasImgHeight;
+                            canvas.width = canvasImgWidth;
+                            
                         } else {
-                            canvas.width = resizedWidth;
-                            canvas.height = canvas.width * (img.height / img.width);
+                            ////landscape image
+                            canvasImgWidth = resizedWidth;
+                            canvasImgHeight = canvasImgWidth * (img.height / img.width);
+                            canvas.height = canvasImgHeight;
+                            canvas.width = canvasImgWidth;
+                            //console.log("x,y:" + x + ',' + y);                            
+                        }
+
+                        x = canvasImgWidth < img.width ? 0 : (canvasImgWidth - img.width) / 2; //starting position X
+                        y = canvasImgHeight < img.height ? 0 : (canvasImgHeight - img.height) / 2; //starting position Y
+
+                        if (img.width > canvas.width) {
+                            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        } else {
+                            ctx.drawImage(img, 0, 0, canvasImgWidth, canvasImgHeight, x, y, canvasImgWidth, canvasImgHeight);
                         }
                         
-
-                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-
+                        
+                        var cropperMargin = 10; //locate the cropper inside the image, instead of starting from (0,0)co-ordinate.
                         $('#canvasSource').Jcrop({
                             allowSelect: !0,
                             allowMove: !0,
                             allowResize: !0,
                             bgColor: 'black',
                             bgOpacity: .4,
-                            setSelect: [ parseInt( resizedWidth), parseInt( resizedHeight), 0, 0],
+                            setSelect: [parseInt(resizedWidth) - cropperMargin, parseInt(resizedHeight) - cropperMargin, cropperMargin, cropperMargin],
                             aspectRatio: parseInt( resizedWidth) / parseInt( resizedHeight),
                             onChange: SetCoordinates,
                             onSelect: SetCoordinates
@@ -197,8 +213,6 @@
                 var canvasSource = document.getElementById("canvasSource");
                 context.drawImage(canvasSource, x1, y1, width, height, 0, 0, width, height);
 
-                $("#canvas").attr("style", "width:auto; height: auto;");
-
                 $('#imgCropped').val(canvas.toDataURL());
                 //$('[id*=btnUpload]').show();
                 $('[id*=btnUploadAjax]').show();
@@ -222,7 +236,10 @@
                 e.preventDefault();
                 var data = new FormData();
                 data.append('File', $('#imgCropped').val());
-                parent.GetImage('' );//clear the old file
+                if (!parent) {
+                    parent.GetImage('');//clear the old file
+                }
+                
                 $.ajax({
                     async: true,
                     type: 'POST',
@@ -239,7 +256,10 @@
                         $('#pnlResult').show(); $('#pnlCrpper').hide(); $('#pnlUpload').hide();
                         $("#lblMessage").html("<div class='alert alert-success' role='alert'><i class='glyphicon glyphicon-ok' aria-hidden='true'></i> Successfully Uploaded! Close the window to continue.</div>");
                         $("#imgResultImage").attr("src", '/Admin/' + data.url)
-                        parent.GetImage('/Admin/' + data.url);
+                        if (!parent) {
+                            parent.GetImage('/Admin/' + data.url);
+                        }
+                            
 
                     },
                     error: function (data) {
