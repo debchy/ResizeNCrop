@@ -144,7 +144,7 @@
 
                 var reader = new FileReader();
                 reader.onload = function (e) {
-                    $('#Image1').show();
+                    //$('#Image1').show();
                     $('#Image1').attr("src", e.target.result);
 
                     var canvas = document.getElementById("canvasSource");                    
