@@ -29,14 +29,11 @@ Partial Class F_ImageUploader_CMS_ImageResizeNCropp_VB
             resizedHeight = 200
         End Try
 
-        'If resizedWidth >= resizedHeight Then
-        '    canvasSource.Attributes.Add("Width", resizedWidth)
-        'Else
-        '    'canvasImgHeight = resizedHeight;
-        '    'resizedWidth = resizedHeight * (img.width / img.height);
-        '    canvasSource.Attributes.Add("height", resizedHeight)
-        '    canvasSource.Attributes.Add("Width", resizedWidth)
-        'End If
+        If resizedWidth >= resizedHeight Then
+            canvasSource.Attributes.Add("Width", resizedWidth)
+        Else
+            canvasSource.Attributes.Add("height", resizedHeight)
+        End If
     End Sub
 
     Protected Sub Upload(sender As Object, e As System.EventArgs)
