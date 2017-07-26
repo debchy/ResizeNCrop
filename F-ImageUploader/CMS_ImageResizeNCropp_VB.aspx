@@ -149,7 +149,7 @@
 
                     var canvas = document.getElementById("canvasSource");                    
                     var ctx = canvas.getContext("2d");
-
+                    
                     canvas.removeAttribute("width");//clear old canvas width
                     canvas.removeAttribute("height");//clear old canvas height
                     
