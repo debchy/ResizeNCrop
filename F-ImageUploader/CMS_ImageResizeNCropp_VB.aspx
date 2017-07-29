@@ -1,7 +1,6 @@
 ﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="CMS_ImageResizeNCropp_VB.aspx.vb" Inherits="F_ImageUploader_CMS_ImageResizeNCropp_VB" %>
-
 <!DOCTYPE html>
-
+<%--reference https://developer.mozilla.org/en/docs/Web/API/CanvasRenderingContext2D/drawImage--%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Image Resize and Crop</title>
@@ -23,7 +22,13 @@
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
     
-
+    <style>
+        .jcrop-holder{
+                display: inline-block;
+                background-color: #000;
+                border: rgba(128, 128, 128, 0.33) dashed 1px;
+        }
+    </style>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -70,8 +75,8 @@
                     </div>
                 </div>
                 <div class="row" >
-                    <div class="col-xs-12">
-                        <canvas id="canvasSource"  runat="server"></canvas>
+                    <div class="col-xs-12 text-center">
+                        <canvas id="canvasSource"  runat="server" style="background-color:white;"></canvas>
                         <div style="margin-top:10px">
                             <%--<form name="photo" id="imageUploadForm" enctype="multipart/form-data" action="/" method="post">
 
@@ -109,7 +114,7 @@
             <div class="panel-body text-center">
                 <asp:Literal ID="ltrMessage" runat="server"></asp:Literal>
                 <asp:Label ID="lblMessage" runat="server"></asp:Label>
-                <asp:Image ID="imgResultImage" runat="server" />                
+                <asp:Image ID="imgResultImage" runat="server"  style="border: rgba(128, 128, 128, 0.33) dashed 1px;"/>                
             </div>
         </div>
     
@@ -148,7 +153,7 @@
                     $('#Image1').attr("src", e.target.result);
 
                     var canvas = document.getElementById("canvasSource");                    
-                    var ctx = canvas.getContext("2d");
+                    var canvasContext = canvas.getContext("2d");
                     
                     canvas.removeAttribute("width");//clear old canvas width
                     canvas.removeAttribute("height");//clear old canvas height
@@ -158,32 +163,12 @@
                     img.src = e.target.result;
                     img.onload = function () {
                         //console.log(canvas.width);
-                        var x = 0, y = 0, canvasImgWidth, canvasImgHeight;
-                        if (img.height > img.width) {
-                            ////portrate image                            
-                            canvasImgHeight = resizedHeight;
-                            canvasImgWidth = canvasImgHeight * (img.width / img.height);
-                            canvas.height = canvasImgHeight;
-                            canvas.width = canvasImgWidth;
-                            
-                        } else {
-                            ////landscape image
-                            canvasImgWidth = resizedWidth;
-                            canvasImgHeight = canvasImgWidth * (img.height / img.width);
-                            canvas.height = canvasImgHeight;
-                            canvas.width = canvasImgWidth;
-                            //console.log("x,y:" + x + ',' + y);                            
-                        }
-
-                        x = canvasImgWidth < img.width ? 0 : (canvasImgWidth - img.width) / 2; //starting position X
-                        y = canvasImgHeight < img.height ? 0 : (canvasImgHeight - img.height) / 2; //starting position Y
-
-                        if (img.width > canvas.width) {
-                            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                        } else {
-                            ctx.drawImage(img, 0, 0, canvasImgWidth, canvasImgHeight, x, y, canvasImgWidth, canvasImgHeight);
-                        }
+                        var x = 0, y = 0, canvasImgWidth, canvasImgHeight, resultX=0, resultY=0;
+                        canvas.setAttribute("width", resizedWidth);
+                        canvas.setAttribute("height", resizedHeight);
+                        ImageResizer(canvasContext, img, resizedWidth, resizedHeight, img.width, img.height, x, y, resultX, resultY);
                         
+
                         
                         var cropperMargin = 10; //locate the cropper inside the image, instead of starting from (0,0)co-ordinate.
                         
@@ -243,8 +228,9 @@
                 e.preventDefault();
                 var data = new FormData();
                 data.append('File', $('#imgCropped').val());
-                if (!parent) {
-                    parent.GetImage('');//clear the old file
+                if (parent != null) {
+                    try { parent.GetImage(''); } catch (e) { }//clear the old file
+                    
                 }
                 
                 $.ajax({
@@ -263,8 +249,11 @@
                         $('#pnlResult').show(); $('#pnlCrpper').hide(); $('#pnlUpload').hide();
                         $("#lblMessage").html("<div class='alert alert-success' role='alert'><i class='glyphicon glyphicon-ok' aria-hidden='true'></i> Successfully Uploaded! Close the window to continue.</div>");
                         $("#imgResultImage").attr("src", '/Admin/' + data.url)
-                        if (!parent) {
-                            parent.GetImage('/Admin/' + data.url);
+                        
+                        if (parent != null) {
+                            console.log("opener window's image has targeted");
+                            try { parent.GetImage('/Admin/' + data.url); } catch (e) { }
+                            
                         }
                             
 
@@ -277,6 +266,87 @@
             }));
         });
         
+        function ImageResizer(canvasContext,img, canvasWidth, canvasHeight, sourceWidth, sourceHeight, destinationX, destinationY, destinationWidth, destinationHeight) {
+            var canvasRatio = canvasWidth / canvasHeight;
+            var sourceRatio = sourceWidth / sourceHeight;
+
+            if (sourceWidth > canvasWidth || sourceHeight > canvasHeight) {
+                //if the image do not fit into the required canvas
+                if (canvasRatio >= 1) {
+                    //if the canvas is landscape
+
+                    if (sourceRatio <= 1) {
+                        //if the image is portrait
+                        destinationHeight = canvasHeight;
+                        destinationWidth = destinationHeight * sourceRatio;
+                        destinationX = (canvasWidth - destinationWidth) / 2;
+                        destinationY = 0;
+                    }
+                    else if (sourceRatio > 1) {
+                        //if the image is landscape
+                        if (canvasRatio < sourceRatio) {
+                            //make the landscape image fit inside the required Canvas. 
+                            //In this case ImageX is bigger than canvasWidth & ImageY is small than canvasHeight
+                            destinationWidth = canvasWidth;
+                            destinationHeight = destinationWidth / sourceRatio;
+                            destinationX = 0;
+                            destinationY = (canvasHeight - destinationHeight) / 2;
+                        } else if (canvasRatio >= sourceRatio) {
+                            //In this case ImageY is bigger than canvasHeight & ImageX is small than canvasWidth
+                            destinationHeight = canvasHeight;
+                            destinationWidth = destinationHeight * sourceRatio;
+                            destinationX = (canvasWidth - destinationWidth) / 2;
+                            destinationY = 0;
+                        }
+                    }
+
+
+                }
+                else if (canvasRatio < 1) {
+                    //if the canvas is portrait
+                    if (sourceRatio >= 1) {
+                        //if the image is landscape
+                        console.log("phase1");
+                        destinationWidth = canvasWidth;
+                        destinationHeight = destinationWidth / sourceRatio;
+                        destinationX = 0;
+                        destinationY = (canvasHeight - destinationHeight) / 2;
+                    }
+                    else if (sourceRatio < 1) {
+                        //if the image is portrait
+                        if (canvasRatio > sourceRatio) {
+                            console.log("phase2");
+                            //make the portrait image fit inside the required Canvas. 
+                            //In this case ImageY is bigger than canvasHeight & ImageX is small than canvasWidth
+                            destinationHeight = canvasHeight;
+                            destinationWidth = destinationHeight * sourceRatio;
+                            destinationX = (canvasWidth - destinationWidth) / 2;
+                            destinationY = 0;
+                        } else if (canvasRatio <= sourceRatio) {
+                            //In this case ImageX is bigger than canvasWidth & ImageY is small than canvasHeight
+                            console.log("phase3");
+                            destinationWidth = canvasWidth;
+                            destinationHeight = destinationWidth / sourceRatio;
+                            destinationX = 0;
+                            destinationY = (canvasHeight - destinationHeight) / 2;
+                        }
+                    }
+
+                }
+            }
+            else {
+                console.log("phase4");
+                //image will directly fit inside the canvas
+                destinationWidth = sourceWidth;
+                destinationHeight = sourceHeight;
+                destinationX = (canvasWidth - sourceWidth) / 2;
+                destinationY = (canvasHeight - sourceHeight) / 2;
+            }
+            
+
+            console.log("img.width=" + sourceWidth + " img.height=" + sourceHeight + " destinationX=" + destinationX + " destinationY=" + destinationY + " destinationWidth=" + destinationWidth + " destinationHeight=" + destinationHeight);
+            canvasContext.drawImage(img, 0, 0, sourceWidth, sourceHeight, destinationX, destinationY, destinationWidth, destinationHeight);
+        }
 
     </script>
 </body>

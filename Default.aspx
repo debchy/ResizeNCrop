@@ -1,5 +1,8 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Default.aspx.cs" Inherits="_Default" %>
 
+<%@ Register Src="~/F-ImageUploader/Control_CMS_ImageResizeNCropp_CS.ascx" TagPrefix="uc1" TagName="Control_CMS_ImageResizeNCropp_CS" %>
+
+
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -53,9 +56,9 @@
 
             
         });
-        function GetImage(imageURL) {
-            $('img[id$="imgResultImage"]').attr("src", imageURL).show();
-        }
+        //function GetImage(imageURL) {
+        //    $('img[id$="imgResultImage"]').attr("src", imageURL).show();
+        //}
 
     </script>
 </head>
@@ -66,9 +69,21 @@
 
         <div class="panel panel-primary">
             <div class="panel-body">
-                <asp:Image ID="imgResultImage" runat="server" style="display:none" ClientIDMode="Static" />   
-                <a href='/F-ImageUploader/CMS_ImageResizeNCropp_VB.aspx?weight=500&height=440'  class="imageUpload btn btn-primary fancybox.iframe" >Upload Image</a>                
-                <%--<a data-fancybox data-type="iframe" data-src='/F-ImageUploader/CMS_ImageResizeNCropp_VB.aspx?weight=500&height=440' href="javascript:;" class="imageUpload button" >Upload Image</a>--%>
+
+                <%--<div class="row">
+                    <div class="col-xs-12">
+                        <asp:Image ID="imgResultImage" runat="server" style="display:none;border: rgba(128, 128, 128, 0.33) dashed 1px;" ClientIDMode="Static" />  
+                    </div>
+                    <div class="col-xs-12" style="margin-top:5px;">
+                        <a href='/F-ImageUploader/CMS_ImageResizeNCropp_VB.aspx?width=500&height=400'  class="imageUpload btn btn-primary fancybox.iframe" >Upload Image</a>                
+                        
+                    </div>
+                </div>--%>     
+                <br />
+                <uc1:Control_CMS_ImageResizeNCropp_CS runat="server" ID="Control_CMS_ImageResizeNCropp_CS" />
+                <br />
+                <uc1:Control_CMS_ImageResizeNCropp_CS runat="server" ID="Control_CMS_ImageResizeNCropp_VB1" />
+                
             </div>
         </div>
         </div>
