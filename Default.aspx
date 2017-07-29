@@ -74,19 +74,11 @@
         <div class="panel panel-primary">
             <div class="panel-body">
 
-                <%--<div class="row">
-                    <div class="col-xs-12">
-                        <asp:Image ID="imgResultImage" runat="server" style="display:none;border: rgba(128, 128, 128, 0.33) dashed 1px;" ClientIDMode="Static" />  
-                    </div>
-                    <div class="col-xs-12" style="margin-top:5px;">
-                        <a href='/F-ImageUploader/CMS_ImageResizeNCropp_VB.aspx?width=500&height=400'  class="imageUpload btn btn-primary fancybox.iframe" >Upload Image</a>                
-                        
-                    </div>
-                </div>--%>     
+                <uc1:Control_CMS_ImageResizeNCropp_VB runat="server" ID="Control_CMS_ImageResizeNCropp_VB" 
+                    Width="600" Height="400" ButtonName="Upload Image VB (600px x 400px)" />
                 <br />
-                <uc1:Control_CMS_ImageResizeNCropp_VB runat="server" ID="Control_CMS_ImageResizeNCropp_VB" Width="600" Height="400" ButtonName="Upload Image VB (600px x 400px)" />
-                <br />
-                <uc1:Control_CMS_ImageResizeNCropp_CS runat="server" ID="Control_CMS_ImageResizeNCropp_CS" Width="400" Height="600" ButtonName="Upload Image CS (400px x 600px)" />
+                <uc1:Control_CMS_ImageResizeNCropp_CS runat="server" ID="Control_CMS_ImageResizeNCropp_CS" 
+                    Width="400" Height="600" ButtonName="Upload Image CS (400px x 600px)" />
                 
             </div>
         </div>
