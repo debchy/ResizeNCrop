@@ -1,4 +1,7 @@
-﻿
+﻿/*****
+Developer: Debashis Chowdhury
+Description: Resize the input image keeping it's ratio
+****/
 $(function () {
 
     var jcrop_api;

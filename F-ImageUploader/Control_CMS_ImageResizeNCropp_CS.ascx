@@ -6,6 +6,7 @@
         
     </div>
     <div class="col-xs-12" style="margin-top:5px;">
-        <a href='/F-ImageUploader/CMS_ImageResizeNCropp_CS.aspx?controlID=<%= this.ID %>&width=<%= Width %>&height=<%= Height %>'  class="imageUpload btn btn-primary fancybox.iframe <%= CssClass %>" ><%= ButtonName %></a>                
+        <a href='/F-ImageUploader/CMS_ImageResizeNCropp_CS.aspx?controlID=<%= this.ID %>&width=<%= Width %>&height=<%= Height %>'  
+            class="imageUpload btn btn-primary fancybox.iframe <%= CssClass %>" ><%= ButtonName %></a>                
     </div>
 </div>
