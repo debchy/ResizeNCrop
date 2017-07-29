@@ -1,6 +1,10 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Default.aspx.cs" Inherits="_Default" %>
 
+<%@ Register Src="~/F-ImageUploader/Control_CMS_ImageResizeNCropp_VB.ascx" TagPrefix="uc1" TagName="Control_CMS_ImageResizeNCropp_VB" %>
 <%@ Register Src="~/F-ImageUploader/Control_CMS_ImageResizeNCropp_CS.ascx" TagPrefix="uc1" TagName="Control_CMS_ImageResizeNCropp_CS" %>
+
+
+
 
 
 <!DOCTYPE html>
@@ -80,9 +84,9 @@
                     </div>
                 </div>--%>     
                 <br />
-                <uc1:Control_CMS_ImageResizeNCropp_CS runat="server" ID="Control_CMS_ImageResizeNCropp_CS" />
+                <uc1:Control_CMS_ImageResizeNCropp_VB runat="server" ID="Control_CMS_ImageResizeNCropp_VB" Width="600" Height="400" ButtonName="Upload Image VB (600px x 400px)" />
                 <br />
-                <uc1:Control_CMS_ImageResizeNCropp_CS runat="server" ID="Control_CMS_ImageResizeNCropp_VB1" />
+                <uc1:Control_CMS_ImageResizeNCropp_CS runat="server" ID="Control_CMS_ImageResizeNCropp_CS" Width="400" Height="600" ButtonName="Upload Image CS (400px x 600px)" />
                 
             </div>
         </div>

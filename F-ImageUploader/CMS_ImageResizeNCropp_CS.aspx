@@ -1,5 +1,7 @@
-﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="CMS_ImageResizeNCropp_VB.aspx.vb" Inherits="F_ImageUploader_CMS_ImageResizeNCropp_VB" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="CMS_ImageResizeNCropp_CS.aspx.cs" Inherits="F_ImageUploader_CMS_ImageResizeNCropp_CS" %>
+
 <!DOCTYPE html>
+
 <%--reference https://developer.mozilla.org/en/docs/Web/API/CanvasRenderingContext2D/drawImage--%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
@@ -135,7 +137,7 @@
     <!--END http://jcrop.org-->
 
     <script type="text/javascript">
-        var controlID = '<%= Request.QueryString("controlID") %>';
+        var controlID = '<%= Request.QueryString["controlID"] %>';
         var resizedWidth='<%= resizedWidth%>';
         var resizedHeight = '<%= resizedHeight %>';
 

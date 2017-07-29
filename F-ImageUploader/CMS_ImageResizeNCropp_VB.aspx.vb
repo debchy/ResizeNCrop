@@ -61,7 +61,7 @@ Partial Class F_ImageUploader_CMS_ImageResizeNCropp_VB
         imgResultImage.ImageUrl = "~/Admin/" & filename
 
         ClientScript.RegisterStartupScript(Me.GetType(), "uploaded",
-                                          "<script>$('#pnlResult').show();$('#pnlCrpper').hide(); $('#pnlUpload').hide(); setCookie('croppedImage','" & "/Admin/" & filename & "',1);  parent.$.fancybox.close();  </script>")
+                                          "<script>$('#pnlResult').show();$('#pnlCrpper').hide(); $('#pnlUpload').hide();  parent.$.fancybox.close();  </script>")
     End Sub
 
 
