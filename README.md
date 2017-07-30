@@ -1,11 +1,11 @@
 # ResizeNCrop
-# developer: Debashis Chowdhury
-# published at: https://www.codeproject.com/Articles/1198920/Create-ASP-net-control-for-Image-resizer-and-cropp
+## developer: Debashis Chowdhury
+## published at: https://www.codeproject.com/Articles/1198920/Create-ASP-net-control-for-Image-resizer-and-cropp
 Resizing is not anymore clients headache. Client can upload any size of image. We are resizing according to our need and giving them option to crop the image according to aspect ratio. 
 
 Here I am using JCrop jquery plugins(http://jcrop.org/) for cropping and I developed a algorithm to resize the input image keeping it's ratio. Also, I made a custom control on asp.net to give a simple solution to integrate into .net projects and simple way to handle for the user.
 
-# Folder Structure
+## Folder Structure
 The F-ImageUploader is the folder which contains all the required files for the control. 
 
 ImageResizeNCrop.js contains all javascript code for resizing, cropping and saving.

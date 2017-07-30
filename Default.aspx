@@ -43,8 +43,8 @@
             $(".imageUpload").fancybox({
                 
                 //fitToView: false,
-                //                  maxWidth: 800,
-                //                  maxHeight: 600,
+                //maxWidth: 800,
+                //maxHeight: 600,
                 autoHeight: true,
                 autoWidth: true,
                 fitToView: true,
@@ -60,9 +60,7 @@
 
             
         });
-        //function GetImage(imageURL) {
-        //    $('img[id$="imgResultImage"]').attr("src", imageURL).show();
-        //}
+
 
     </script>
 </head>
